@@ -19,6 +19,7 @@ function Header() {
     { name: "Appointments", slug: "/appointments", active: authStatus },
     { name: "Reports", slug: "/reports", active: authStatus },
     { name: "Settings", slug: "/settings", active: authStatus },
+    {name : "book Appointment", slug:"/chatbot", active:authStatus}
   ];
 
   useEffect(() => {

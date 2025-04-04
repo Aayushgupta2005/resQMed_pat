@@ -7,6 +7,7 @@ import { Footer, Header } from './components';
 import { Outlet } from 'react-router-dom';
 import { MessageCircle } from 'lucide-react';
 import MedicineLookup from './components/MedicineLookup.jsx';
+import ChatBot from './components/chatbot.jsx';
 
 function App() {
   const [loading, setLoading] = useState(true);

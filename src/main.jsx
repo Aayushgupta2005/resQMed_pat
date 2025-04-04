@@ -13,6 +13,7 @@ import Reports from './pages/Reports.jsx'
 import { AuthLayout, Login } from './components/index.js'
 import HospitalLocator from "./pages/HospitalLocator.jsx"
 import Signup from './pages/Signup'
+import ChatBot from './components/chatbot.jsx'
 const router = createBrowserRouter([
   {
     path: "/",
@@ -75,6 +76,14 @@ const router = createBrowserRouter([
             element: (
                 <AuthLayout authentication={true}>
                     <Settings />
+                </AuthLayout>
+            ),
+        },
+        {
+            path: "/chatbot",
+            element: (
+                <AuthLayout authentication={true}>
+                    <ChatBot />
                 </AuthLayout>
             ),
         },

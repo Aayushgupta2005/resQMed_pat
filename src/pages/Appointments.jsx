@@ -212,7 +212,7 @@ const Appointments = () => {
                   </td>
                   <td className="p-4">{app.hospitalName || "Unknown Hospital"}</td>
                   <td className="p-4">
-                    <FileText className="inline-block h-5 w-5 text-gray-400 mr-2" />
+                    <FileText className=" inline-block h-5 w-5 text-gray-400 mr-2" />
                     {app.description}
                   </td>
                   <td className="p-4">
