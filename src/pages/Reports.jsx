@@ -63,41 +63,9 @@ const Records = () => {
 
   return (
     <div className="max-w-4xl mx-auto p-6 bg-gray-50 min-h-screen">
-      <header className="flex justify-between items-center mb-6">
-        <h1 className="text-3xl font-bold text-gray-800">Medical Records</h1>
-        <button
-          onClick={() => setShowRegistration(true)}
-          className="flex items-center bg-blue-600 text-white px-4 py-2 rounded-md shadow hover:bg-blue-700"
-        >
-          <PlusCircle className="h-5 w-5 mr-2" /> Register New Patient
-        </button>
-      </header>
+ 
 
-      {showRegistration && (
-        <div className="bg-white shadow-md rounded-lg p-6 mb-6">
-          <h2 className="text-xl font-semibold mb-4">Patient Registration</h2>
-          <div className="space-y-4">
-            <input
-              type="text"
-              placeholder="Patient ID"
-              value={newPatientId}
-              onChange={(e) => setNewPatientId(e.target.value)}
-              className="w-full border rounded-md p-2 focus:ring focus:ring-blue-500"
-            />
-            <input
-              type="text"
-              placeholder="Patient Name"
-              value={newPatientName}
-              onChange={(e) => setNewPatientName(e.target.value)}
-              className="w-full border rounded-md p-2 focus:ring focus:ring-blue-500"
-            />
-            <div className="flex justify-end space-x-2">
-              <button onClick={() => setShowRegistration(false)} className="text-gray-600">Cancel</button>
-              <button onClick={handlePatientRegistration} className="bg-blue-600 text-white px-4 py-2 rounded-md">Register</button>
-            </div>
-          </div>
-        </div>
-      )}
+
 
       <div className="bg-white shadow-md rounded-lg p-6">
         <div className="flex space-x-4 mb-6">

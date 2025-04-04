@@ -4,6 +4,31 @@ import { Users, Calendar, Activity, FileText, MapPin, Bell, Search, AlertTriangl
 const Dashboard = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [hospitals, setHospitals] = useState([]);
+  const API_KEY = "de73f4aaaa9143e1a3d2a2fac1206a8a";
+  // const API_URL = `https://newsapi.org/v2/top-headlines?country=us&apiKey=${API_KEY}`;
+  const [news, setNews] = useState([]);
+  const [query, setQuery] = useState("");
+
+  useEffect(() => {
+    fetchNews();
+  }, []);
+
+  const fetchNews = async (countryCode = "in") => {
+    try {
+      let response = await fetch(`https://newsapi.org/v2/top-headlines?country=${countryCode}&q=medical%20schemes&apiKey=${API_KEY}`);
+      let data = await response.json();
+  
+      if (!data.articles || data.articles.length === 0){
+        response = await fetch(`https://newsapi.org/v2/everything?q=medical%20schemes&language=en&apiKey=${API_KEY}`);
+        data = await response.json();
+      }
+  
+      setNews(data.articles || []);
+    } catch (error) {
+      console.error("Error fetching news:", error);
+    }
+  };
+  
 
   useEffect(() => {
     // Simulated API data
@@ -32,9 +57,8 @@ const Dashboard = () => {
 
       {/* Stats Section */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-        {[{ name: "Total Patients", value: "2,347", icon: Users },
+        {[
           { name: "Appointments Today", value: "48", icon: Calendar },
-          { name: "Active Doctors", value: "320", icon: Activity },
           { name: "Medical Records", value: "5,248", icon: FileText }].map((stat) => (
           <div key={stat.name} className="bg-white p-6 rounded-xl shadow-md flex items-center space-x-4 hover:shadow-lg transition">
             <stat.icon className="h-10 w-10 text-blue-600" />
@@ -84,6 +108,40 @@ const Dashboard = () => {
           <li className="text-orange-600 font-medium">System maintenance tonight at 11 PM.</li>
         </ul>
       </div>
+
+
+
+
+      {/* News Alerts */}
+<div className="bg-white p-6 rounded-xl shadow-md">
+<h2 className="text-lg font-semibold flex justify-start text-gray-900 flex items-center"><AlertTriangle className="h-6 w-6 text-red-600 mr-2" /> Latest news</h2>
+<div className=" pt-4 mx-auto ">
+  
+      <div className="grid grid-cols-1 md:grid-cols-5 gap-4">
+        {news.slice(0,5).map((article, index) => (
+          <div key={index} className="border rounded-lg p-4">
+            {article.urlToImage && <img src={article.urlToImage} alt="news" className="w-full h-40 object-cover mb-2 rounded-md" />}
+            <h2 className="text-lg font-semibold">{article.title}</h2>
+            <a href={article.url} target="_blank" rel="noopener noreferrer" className="text-blue-500 mt-2 inline-block">Read more</a>
+          </div>
+        ))}
+      </div>
+    </div>
+    
+
+    </div>
+
+
+
+
+
+
+
+
+
+
+
+
 
       {/* Upcoming Appointments */}
       <div className="bg-white p-6 rounded-xl shadow-md">
