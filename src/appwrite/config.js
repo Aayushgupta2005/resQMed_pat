@@ -16,7 +16,7 @@ export class Service {
     }
 
     // 1. Create an Appointment
-    async createAppointment({ userId, hospitalId, dateTime, description }) {
+    async createAppointment({ userId, hospitalId, dateTime, description , status}) {
         try {
             return await this.databases.createDocument(
                 conf.appwriteDatabaseId,
@@ -27,6 +27,7 @@ export class Service {
                     hospitalId,
                     dateTime,
                     description,
+                    status,
                 }
             );
         } catch (error) {

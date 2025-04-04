@@ -13,7 +13,7 @@ const Appointments = () => {
     hospitalName: "",
     dateTime: "",
     description: "",
-    status: "scheduled"
+    status: "pending"
   });
   const [error, setError] = useState("");
 
@@ -43,7 +43,7 @@ const Appointments = () => {
   };
 
   const handleCreateAppointment = async (e) => {
-    console.log("fuck off")
+    console.log("fuck of")
     e.preventDefault();
     try {
       const currentUser = await authService.getCurrentUser();
@@ -71,7 +71,7 @@ const Appointments = () => {
           hospitalName: "",
           dateTime: "",
           description: "",
-          status: "scheduled"
+          status: "pending"
         });
         fetchAppointments();
       }
@@ -153,9 +153,7 @@ const Appointments = () => {
             onChange={(e) => setStatusFilter(e.target.value)}
           >
             <option value="all">All Status</option>
-            <option value="scheduled">Scheduled</option>
-            <option value="completed">Completed</option>
-            <option value="cancelled">Cancelled</option>
+            <option value="scheduled">pending</option>
           </select>
         </div>
       </div>
@@ -200,7 +198,6 @@ const Appointments = () => {
                     {appointment.status === "scheduled" && <Clock className="inline-block h-4 w-4 mr-1" />}
                     {appointment.status === "completed" && <CheckCircle className="inline-block h-4 w-4 mr-1" />}
                     {appointment.status === "cancelled" && <XCircle className="inline-block h-4 w-4 mr-1" />}
-                    {/* {appointment.status.charAt(0).toUpperCase() + appointment.status.slice(1)} */}
                   </span>
                 </td>
               </tr>

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Users, Calendar, Activity, FileText, MapPin, Bell, Search, AlertTriangle, Stethoscope } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 const Dashboard = () => {
   const [searchTerm, setSearchTerm] = useState("");
@@ -28,7 +29,10 @@ const Dashboard = () => {
       console.error("Error fetching news:", error);
     }
   };
-  
+  const navigate = useNavigate();
+  const handleSOSClick = () => {
+    navigate("/sos");
+  };
 
   useEffect(() => {
     // Simulated API data
@@ -69,7 +73,14 @@ const Dashboard = () => {
           </div>
         ))}
       </div>
-
+  <div className="flex items-center justify-center h-">
+    <button
+      onClick={handleSOSClick}
+      className="px-6 py-3 text-white text-lg font-bold bg-red-600 rounded-full shadow-lg hover:bg-red-700 transition"
+    >
+      🚨 SOS
+    </button>
+  </div>
       {/* Hospital Search & List */}
       <div className="bg-white p-6 rounded-xl shadow-md">
         <div className="flex items-center space-x-4 border-b pb-3">

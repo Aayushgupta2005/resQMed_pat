@@ -11,7 +11,7 @@ import Settings from './pages/Settings.jsx'
 import Appointments from './pages/Appointments.jsx'
 import Reports from './pages/Reports.jsx'
 import { AuthLayout, Login } from './components/index.js'
-
+import HospitalLocator from "./pages/HospitalLocator.jsx"
 import Signup from './pages/Signup'
 const router = createBrowserRouter([
   {
@@ -43,6 +43,14 @@ const router = createBrowserRouter([
             element: (
                 <AuthLayout authentication={true}>
                     <Dashboard />
+                </AuthLayout>
+            ),
+        },
+        {
+            path: "/sos",
+            element: (
+                <AuthLayout authentication={true}>
+                    <HospitalLocator />
                 </AuthLayout>
             ),
         },
