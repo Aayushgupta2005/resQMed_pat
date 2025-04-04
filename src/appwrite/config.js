@@ -1,10 +1,11 @@
 import conf from '../conf/conf.js';
-import { Client, ID, Databases, Storage, Query } from "appwrite";
+import { Client, ID, Databases, Storage, Query, Account } from "appwrite";
 
 export class Service {
     client = new Client();
     databases;
     bucket;
+    account;
 
     constructor() {
         this.client
@@ -13,29 +14,43 @@ export class Service {
 
         this.databases = new Databases(this.client);
         this.bucket = new Storage(this.client);
+        this.account = new Account(this.client);
     }
 
-    // 1. Create an Appointment
-    async createAppointment({ userId, hospitalId, dateTime, description , status}) {
+    async getCurrentUser() {
         try {
-            return await this.databases.createDocument(
+            const user = await this.account.get();
+            return user;
+        } catch (err) {
+            console.error("Appwrite Service :: getCurrentUser :: error", err);
+            return null;
+        }
+    }
+
+    async createAppointment({ userId, hospitalId, hospitalName, dateTime, description, status }) {
+        try {
+            const response = await this.databases.createDocument(
                 conf.appwriteDatabaseId,
-                conf.appwriteAppointmentCollectionId, // Use a dedicated collection for appointments
+                conf.appwriteAppointmentCollectionId,
                 ID.unique(),
                 {
                     userId,
                     hospitalId,
+                    hospitalName,
                     dateTime,
                     description,
+                    status: status || "scheduled",
                 }
             );
-        } catch (error) {
-            console.log("Appwrite Service :: createAppointment :: error", error);
+            console.log("Appointment created:", response);
+            return response;
+        } catch (err) {
+            console.error("Appwrite Service :: createAppointment :: error", err.message, err.code, err.response);
             return false;
         }
     }
+    
 
-    // 2. Get Appointments for a User
     async getAppointments(userId) {
         try {
             return await this.databases.listDocuments(
@@ -43,27 +58,39 @@ export class Service {
                 conf.appwriteAppointmentCollectionId,
                 [Query.equal("userId", userId)]
             );
-        } catch (error) {
-            console.log("Appwrite Service :: getAppointments :: error", error);
+        } catch (err) {
+            console.error("Appwrite Service :: getAppointments :: error", err);
             return false;
         }
     }
 
-    // 3. Upload Medical Report (Image)
+    async deleteAppointment(appointmentId) {
+        try {
+            await this.databases.deleteDocument(
+                conf.appwriteDatabaseId,
+                conf.appwriteAppointmentCollectionId,
+                appointmentId
+            );
+            return true;
+        } catch (err) {
+            console.error("Appwrite Service :: deleteAppointment :: error", err);
+            return false;
+        }
+    }
+
     async uploadMedicalReport(file) {
         try {
             return await this.bucket.createFile(
-                conf.appwriteMedicalReportsBucketId, // Separate bucket for medical reports
+                conf.appwriteMedicalReportsBucketId,
                 ID.unique(),
                 file
             );
-        } catch (error) {
-            console.log("Appwrite Service :: uploadMedicalReport :: error", error);
+        } catch (err) {
+            console.error("Appwrite Service :: uploadMedicalReport :: error", err);
             return false;
         }
     }
 
-    // 4. Get Medical Report Preview URL
     getMedicalReportPreview(fileId) {
         return this.bucket.getFilePreview(
             conf.appwriteMedicalReportsBucketId,
@@ -71,7 +98,6 @@ export class Service {
         );
     }
 
-    // 5. Delete Medical Report
     async deleteMedicalReport(fileId) {
         try {
             await this.bucket.deleteFile(
@@ -79,19 +105,18 @@ export class Service {
                 fileId
             );
             return true;
-        } catch (error) {
-            console.log("Appwrite Service :: deleteMedicalReport :: error", error);
+        } catch (err) {
+            console.error("Appwrite Service :: deleteMedicalReport :: error", err);
             return false;
         }
     }
 
-    // 6. Update Patient Personal Info
     async updatePatientInfo(userId, { name, age, gender, contact, address }) {
         try {
             return await this.databases.updateDocument(
                 conf.appwriteDatabaseId,
-                conf.appwritePatientsCollectionId, // Use a collection for patient details
-                userId, // Use the user's ID as the document ID
+                conf.appwritePatientsCollectionId,
+                userId,
                 {
                     name,
                     age,
@@ -100,13 +125,12 @@ export class Service {
                     address,
                 }
             );
-        } catch (error) {
-            console.log("Appwrite Service :: updatePatientInfo :: error", error);
+        } catch (err) {
+            console.error("Appwrite Service :: updatePatientInfo :: error", err);
             return false;
         }
     }
 
-    // 7. Get Patient Personal Info
     async getPatientInfo(userId) {
         try {
             return await this.databases.getDocument(
@@ -114,21 +138,21 @@ export class Service {
                 conf.appwritePatientsCollectionId,
                 userId
             );
-        } catch (error) {
-            console.log("Appwrite Service :: getPatientInfo :: error", error);
+        } catch (err) {
+            console.error("Appwrite Service :: getPatientInfo :: error", err);
             return false;
         }
     }
-    // Get Medical Reports for a user
+
     async getMedicalReports(userId) {
         try {
             return await this.databases.listDocuments(
                 conf.appwriteDatabaseId,
-                conf.appwriteMedicalReportsCollectionId, // You'll need to define this in your conf.js
+                conf.appwriteMedicalReportsCollectionId,
                 [Query.equal("userId", userId)]
             );
-        } catch (error) {
-            console.log("Appwrite Service :: getMedicalReports :: error", error);
+        } catch (err) {
+            console.error("Appwrite Service :: getMedicalReports :: error", err);
             return false;
         }
     }
