@@ -8,7 +8,7 @@ function Logo({ width = '100px', showIcon = true }) {
   return (
     <div 
       onClick={() => navigate('/')}
-      className="flex items-center space-x-2 cursor-pointer group transition-transform duration-200 hover:scale-105"
+      className="flex items-center space-x-2 cursor-pointerAlphx2243 group transition-transform duration-200 hover:scale-105"
       style={{ width }}
     >
       {showIcon && (

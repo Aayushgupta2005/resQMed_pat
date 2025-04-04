@@ -119,6 +119,19 @@ export class Service {
             return false;
         }
     }
+    // Get Medical Reports for a user
+    async getMedicalReports(userId) {
+        try {
+            return await this.databases.listDocuments(
+                conf.appwriteDatabaseId,
+                conf.appwriteMedicalReportsCollectionId, // You'll need to define this in your conf.js
+                [Query.equal("userId", userId)]
+            );
+        } catch (error) {
+            console.log("Appwrite Service :: getMedicalReports :: error", error);
+            return false;
+        }
+    }
 }
 
 const service = new Service();
