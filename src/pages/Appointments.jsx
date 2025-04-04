@@ -13,7 +13,7 @@ const Appointments = () => {
     hospitalName: "",
     dateTime: "",
     description: "",
-    status: "pending"
+    status: "scheduled"
   });
   const [error, setError] = useState("");
 
@@ -43,7 +43,6 @@ const Appointments = () => {
   };
 
   const handleCreateAppointment = async (e) => {
-    console.log("fuck of")
     e.preventDefault();
     try {
       const currentUser = await authService.getCurrentUser();
@@ -71,7 +70,7 @@ const Appointments = () => {
           hospitalName: "",
           dateTime: "",
           description: "",
-          status: "pending"
+          status: "scheduled"
         });
         fetchAppointments();
       }
@@ -153,7 +152,9 @@ const Appointments = () => {
             onChange={(e) => setStatusFilter(e.target.value)}
           >
             <option value="all">All Status</option>
-            <option value="scheduled">pending</option>
+            <option value="scheduled">Pending</option>
+            <option value="completed">Completed</option>
+            <option value="cancelled">Cancelled</option>
           </select>
         </div>
       </div>

@@ -142,18 +142,6 @@ const Dashboard = () => {
 
     </div>
 
-
-
-
-
-
-
-
-
-
-
-
-
       {/* Upcoming Appointments */}
       <div className="bg-white p-6 rounded-xl shadow-md">
         <h2 className="text-lg font-semibold text-gray-900">Upcoming Appointments</h2>

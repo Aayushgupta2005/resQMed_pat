@@ -27,7 +27,6 @@ export class Service {
                     hospitalId,
                     dateTime,
                     description,
-                    status,
                 }
             );
         } catch (error) {
